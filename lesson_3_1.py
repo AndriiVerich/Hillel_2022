@@ -6,7 +6,7 @@ print("Первая часть")
 print("Переменные: ", var_1, var_2, var_3)
 print('ID :',id(var_1), id(var_2), id(var_3),'\n')
 # Поменять их типы так, чтобы у 1-х трёх стали разные идентификаторы, но при этом остались одинаковые данные
-var_1 = tuple(var_1)
+var_1 = ''.join(list(var_1))
 var_2 = float(var_2)
 var_3 = int(var_3)
 
