@@ -1,3 +1,1 @@
-! WORLD Hello?
-! WORLD Hello?
-! WORLD Hello?
+hello world<<<>>>!WORLD Hello?<<<>>>!WORLD Hello?<<<>>>!WORLD Hello?
