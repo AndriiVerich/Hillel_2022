@@ -3,6 +3,6 @@
 # регистр букв не учитывать.
 
 
-inputdata = ['Страна', 'шалаш', 'Летел', 'вертолёт', 'УЧУ', 'мэм', 'язык']
+inputdata = ['Страна', 'шалаш', 'Летел', 'вертолёт', 'УЧУ', 'мэм', 'язык', 'пакетап', 'a']
 
-print(list(filter(lambda x: x[0].lower() == x[-1].lower() and x[1].lower() == x[-2].lower(), inputdata)))
+print(list(filter(lambda x: x.lower() == x[::-1].lower(), inputdata)))
