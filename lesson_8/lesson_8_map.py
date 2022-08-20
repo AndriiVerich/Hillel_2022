@@ -4,8 +4,8 @@
 # элементы всех остальных типов передаются в новый список без изменения их типа.
 # В качестве входной функции в map() использовать lambda-функцию.
 
-list_old = [1, 2, "23", (2,3), 4.5, "str"]
+values = [1, 2, '3', 'forth', 'end', 99, True, None]
 
-list_new = list(map(lambda x: str(x) if type(x) == int else x, list_old))
+list_new = list(map(lambda x: str(x) if type(x) == int else x, values))
 
 print(list_new)
