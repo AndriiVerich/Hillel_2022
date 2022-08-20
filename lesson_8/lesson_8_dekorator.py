@@ -2,10 +2,11 @@ from datetime import datetime
 
 
 def my_decorator(in_def):
-    start = datetime.now()
-    in_def()
-    print(f'Время выполнения функции {in_def}:',datetime.now() - start)
-
+    def the_wrapper():
+        start = datetime.now()
+        in_def()
+        print(f'Время выполнения функции {in_def}:',datetime.now() - start)
+    return the_wrapper
 
 @my_decorator
 def first_fun():
@@ -26,3 +27,7 @@ def second_fun():
         count +=1
     print(count)
     print(2+4)
+
+
+first_fun()
+second_fun()
