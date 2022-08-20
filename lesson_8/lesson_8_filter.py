@@ -5,18 +5,4 @@
 
 inputdata = ['Страна', 'шалаш', 'Летел', 'вертолёт', 'УЧУ', 'мэм', 'язык']
 
-def palindrome (input_list):
-    out_list = []
-    for item in input_list:
-        counter = 0
-        while counter <= len(item)/2:
-            if item[counter].lower() != item[-1-counter].lower():
-                break
-            counter += 1
-        else:
-            out_list.append(item)
-    return out_list
-
-
-
-print(palindrome(inputdata))
+print(list(filter(lambda x: x[0].lower() == x[-1].lower() and x[1].lower() == x[-2].lower(), inputdata)))
