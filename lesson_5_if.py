@@ -15,5 +15,5 @@ while True:
 
     exit_cod = input("Желаете выйти? (Д/Y): ").upper()
 
-    if exit_cod == "Y" or "Д":
+    if exit_cod in ("Y" ,"Д"):
         break
