@@ -2,6 +2,8 @@
 # первой строкой которого озаглавив каждый столбец и добавив новый столбец “телефон”.
 import json
 import csv
+from random import randint
+
 with open('data_file.json') as f:
     output_data_2 = json.load(f)
 
@@ -15,6 +17,9 @@ for item in (list(output_data_2.items())):
         else:
             for item_2 in item_1:
                 list_4.append(item_2)
+    telephone = str(input(f'Введите телефон {list_4[1]}: '))
+    list_4.append(telephone)
+    print(list_4)
     list_2.append(list_4)
 
 with open('task_02.csv', mode='w', encoding='utf-8', newline='') as f:
