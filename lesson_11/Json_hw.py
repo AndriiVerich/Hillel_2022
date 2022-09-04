@@ -27,7 +27,6 @@ while True:
 
     exit_cod = input("Желаете выйти? (Д/Y): ").upper()
     if exit_cod in ("Y", "Д"):
-        print(dict_data)
         break
 
 with open("data_file.json", "w") as write_file:
