@@ -25,5 +25,4 @@ with open('task_02.csv', 'r', encoding='utf-8', newline='') as f:
                 row_index -= 1
             cell = sheet.cell(row=row_index+2, column=col_index+1)
             cell.value = value
-
     wb.save('task_04.xlsx')
