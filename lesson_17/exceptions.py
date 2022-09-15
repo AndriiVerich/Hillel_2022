@@ -40,6 +40,10 @@ class Calculator(int):
 
 
 a = Calculator(6)
+print(a + 'da')
+print(a - 'da')
+print(a / 0)
+print(a / 'da')
 try:
     print(a ** -2)
 except Negative_degree as err:
