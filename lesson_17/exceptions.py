@@ -29,7 +29,12 @@ class Calculator(int):
             return Calculator(self.var ** power)
         else:
             raise Negative_degree()
-
+    def __mul__(self, other):
+        try:
+            return Calculator(self.var * other)
+        except ValueError:
+            return 'Нельзя так умножать!'
+        
     def __truediv__(self, other):
         try:
             return Calculator(self.var / other)
@@ -42,6 +47,7 @@ class Calculator(int):
 a = Calculator(6)
 print(a + 'da')
 print(a - 'da')
+print(a * 'da')
 print(a / 0)
 print(a / 'da')
 try:
