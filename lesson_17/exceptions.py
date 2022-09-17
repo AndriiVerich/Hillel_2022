@@ -7,6 +7,7 @@ class Negative_degree(Exception):
     def __init__(self, message='Возведение в отрицательную степень'):
         super().__init__(message)
 
+
 class Calculator(int):
 
     def __init__(self, var):
@@ -30,6 +31,12 @@ class Calculator(int):
         else:
             raise Negative_degree()
 
+    def __mul__(self, other):
+        try:
+            return Calculator(self.var * other)
+        except ValueError:
+            return 'Нельзя так умножать!'
+
     def __truediv__(self, other):
         try:
             return Calculator(self.var / other)
@@ -40,6 +47,11 @@ class Calculator(int):
 
 
 a = Calculator(6)
+print(a + 'da')
+print(a - 'da')
+print(a * 'da')
+print(a / 0)
+print(a / 'da')
 try:
     print(a ** -2)
 except Negative_degree as err:
