@@ -27,7 +27,7 @@ def unwrapper(records: List) -> int:
     :param records: список ответа БД
     '''
     for record in records:
-        print(int(record[0]) * int(record[1]))
+        print(*record)
 
 
 def get_sum_profit() -> None:
@@ -35,7 +35,7 @@ def get_sum_profit() -> None:
     Функция получения всех записей из таблицы employees
     '''
     query_sql = '''
-        SELECT SUM(UnitPrice), SUM(Quantity)
+        SELECT SUM(UnitPrice * Quantity)
           FROM invoice_items;
     '''
     result = execute_query(query_sql)
