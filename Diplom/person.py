@@ -3,6 +3,7 @@ import datetime
 
 
 class Person(object):
+    # Атрибуты для корректного масштабирования выводимой информации о обЪекте
     len_name = 0
     len_surname = 0
     len_patronymic = 0
@@ -14,16 +15,12 @@ class Person(object):
         self.sex = sex
         self.birthday = birthday
         self.data_death = data_death
-        # Метод . просто метод%) ВОЛШЕБНЫЙ
 
+    # Метод для получения полного имени по которому потом будет производиться поиск человека в базе данных
     def get_full_name(self):
-        """
-        Вернет полное имя человека
-        :return:
-        """
         return f'{self.surname} {self.name} {self.patronymic}'.lower()
-        # Метод для получения полного имени по которому потом будет производиться поиск человека в базе данных
 
+    # СтатикМетод для перевода даты в формат datetime для дальнейшего вычисления возраста человека
     @staticmethod
     def valid_date(data):
         valid_data_list = []
@@ -32,59 +29,49 @@ class Person(object):
             valid_data_list.append(int(i))
         date_time = datetime.date(valid_data_list[2], valid_data_list[1], valid_data_list[0])
         return date_time
-        # СтатикМетод для перевода даты в формат datetime для дальнейшего вычисления возраста человека
 
+    # СтатикМетод для проверки ввода на NoneType и замены его на '__' для корректной работы метода __str__
     @staticmethod
     def valid_none(word):
         if word is None:
             return "__"
         return word
-        # СтатикМетод для проверки ввода на NoneType и замены его на '__' для корректной работы метода __str__
 
-    def get_age(self):
-        day_today = datetime.date.today()
-        if self.data_death is not None:
-            age = str((self.valid_date(self.data_death) - self.valid_date(self.birthday)) / 365)
+    # Метод для расчета возраста
+    def calculate_age(self):
+        if self.data_death is None:
+            today = datetime.date.today()
         else:
-            age = str((day_today - self.valid_date(self.birthday)) / 365)
-        delta = age.split(',')
-        year = delta[0].split(' ')
-        return year[0]
-        # Метод для вычисления возраста человека по дате рождения и дате смерти (если есть)
+            today = datetime.datetime.strptime(self.data_death.replace('.', '/', 2), '%d/%m/%Y').date()
+        born = datetime.datetime.strptime(self.birthday.replace('.', '/', 2), '%d/%m/%Y').date()
+        return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
+    # Делаем изумительно красивы и продуманный вывод;) Все в одну строку, но читаемо и понятно
     def __str__(self):
-        return f'| Имя: {self.name:{self.len_name}} | Фамилия: {self.valid_none(self.surname):{self.len_surname}} | ' \
+        return f'| Имя: {self.name:{self.len_name}} | ' \
+               f'Фамилия: {self.valid_none(self.surname):{self.len_surname}} | ' \
                f'Отчество: {self.valid_none(self.patronymic):{self.len_patronymic}} | '\
-               f'Пол:{self.sex} | Возраст: {self.get_age()} | Родил{"cя: "  if self.sex in "М" else "ась:"} {self.birthday} | Умер{":  " if self.sex in "М" else "ла:"} {self.valid_none(self.data_death):10}|'
-        # return '| Имя: {:s}{:} | Фамилия: {:<10} | Отчество: {:<10} | '\
-        #        'Пол:{:^2} | Возраст: {:^3} | ' \
-        #        'Родил{} {:^10} | Умер{} {:^10}|'.format(self.name, self.len_name - len(self.name), self.valid_none(self.surname),
-        #                                                self.valid_none(self.patronymic), self.sex,
-        #                                                self.get_age(), 'cя: ' if self.sex in 'М' else 'ась:',
-        #                                                self.birthday, ':  ' if self.sex in 'М' else 'ла:', self.valid_none(self.data_death))
-        # # Делаем изумительно красивы и продуманный вывод;) Все в одну строку, но читаемо и понятно
+               f'Пол:{self.sex} | ' \
+               f'Возраст: {self.calculate_age()} | ' \
+               f'Родил{"cя: "  if self.sex in "М" else "ась:"} {self.birthday} | ' \
+               f'Умер{":  " if self.sex in "М" else "ла:"} {self.valid_none(self.data_death):10} |'
 
 
 class PersonList(object):
     file_name = None
-    # Присваиваем имени файла по дефолту None дабы избежать ошибки при сохранении файла
 
     def __init__(self):
         self.persons = []
-        # тоже, просто Метод инициализации класса
 
+    # Метод для вывода списка людей в строку
     def __str__(self):
         return f'Список людей: {self.persons}'
-        # Метод для вывода списка людей в строку
 
-    def __repr__(self):
-        return f'Список людей: {self.persons}'
-        # Метод для вывода списка людей в строку
-
+    # Метод для добавления человека в список
     def add_person(self, person):
         self.persons.append(person)
-        # Метод для добавления человека в список
 
+    # Метод для сохранения всего нашего файла в формате xlsx с кастомным или уже существующим именем
     def save(self, file_name):
         wb = openpyxl.Workbook()
         sheet = wb.active
@@ -93,12 +80,13 @@ class PersonList(object):
         for person in self.persons:
             sheet.append([person.name, person.surname, person.patronymic, person.sex, person.birthday,
                           person.data_death])
-        wb.save(file_name)
+        wb.save(f"{file_name.split('.')[0]}.xlsx")
         wb.close()
         self.persons = []
+        print('-' * 30)
         print("Файл сохранился")
-        # Метод для сохранения всего нашего файла в формате xlsx с кастомным или уже существующим именем
 
+    # Метод для загрузки файла с уже существующим именем
     def load(self, file_name):
         wb = openpyxl.load_workbook(file_name)
         sheet = wb['Люди']
@@ -106,14 +94,16 @@ class PersonList(object):
             person = Person(row[0].value, row[1].value, row[2].value, row[3].value, row[4].value, row[5].value)
             self.persons.append(person)
         wb.close()
+
         self.max_len_name()
         self.max_len_surname()
         self.max_len_patronymic()
 
         self.file_name = file_name
+        print('-' * 30)
         print('Загружена база данных')
-        # Метод для загрузки файла с уже существующим именем
 
+    # Методы перезаписи длинны атрибутов класса Person
     def max_len_name(self):
         max_len = 0
         for item in self.persons:
@@ -135,40 +125,26 @@ class PersonList(object):
                 max_len = len(item.patronymic)
         Person.len_patronymic = max_len
 
+    # Метод для вывода информации о людях в консоль, напоменаем.. 'изумительно красиво и продуманно'
     def get_info(self):
         for person in self.persons:
             print(person)
-        # Метод для вывода информации о людях в консоль, напоменаем.. 'изумительно красиво и продуманно'
 
+    # Метод для поиска людей по полному имени или его части
     def find_persons(self, search_name):
         persons = []
         for person in self.persons:
             if search_name in person.get_full_name():
                 persons.append(person)
         return persons
-        # Метод для поиска людей по полному имени или его части
 
-    def find_person(self, surname):
+    # метод для удаления человека из списка по имени, фамилии и дате рождения
+    def delete_person(self, name, surname, birthday):
         for person in self.persons:
-            if person.surname == surname:
-                return person
-        return None
-        # Метод для поиска людей по фамилии для того же удаления
+            if person.name == name and person.surname == surname and person.birthday == birthday:
+                self.persons.remove(person)
+                return True
 
-    def delete_person(self, surname):
-        person = self.find_person(surname)
-        if person is not None:
-            self.persons.remove(person)
-            return True
-        return False
-        # Метод для удаления человека из списка по фамилии
-
-
+# Функция для валидации даты под метод вычисления возраста человека
 def get_valid_date(input_date: str):
-    """
-    Возвращает дату в валидном формате для datetime
-    :param input_date:
-    :return:
-    """
     return input_date.replace(" ", ".", 2).replace("/", ".", 2).replace("-", ".", 2)
-    # Функция для валидации даты под метод вычисления возраста человека
